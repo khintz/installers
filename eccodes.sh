@@ -3,17 +3,18 @@
 indir="/home/kah/env/" # Installation prefix
 dldir=$PWD"/tmp" # Directory to download archives to
 
-OLDPYTHON=false # Python2.7 is necessary for ODB Python binding
-SWIG=false # Used for python binding in ODB
-LIBPNG=false
-ZLIB=false
-SZIP=false # For HDF5 compression
-JPEG=false
-JASPER=false
-HDF5=false # Dependency for netcdf and eccodes
+OLDPYTHON=true # Python2.7 is necessary for ODB Python binding
+PROJ4=true
+SWIG=true # Used for python binding in ODB
+LIBPNG=true
+ZLIB=true
+SZIP=true # For HDF5 compression
+JPEG=true
+JASPER=true
+HDF5=true # Dependency for netcdf and eccodes
 NETCDFC=false # Not a required dependency, but nice to have
 NETCDFFORTRAN=false # Not a required dependency, but nice to have
-ECCODES=false # A must have and dependency to ODB
+ECCODES=true # A must have and dependency to ODB
 ODB=false
 MAGIGS=false
 
@@ -64,6 +65,90 @@ return 1
 
 e_header "BASH INSTALLATION SCRIPT OF ECCODES AND DEPENDENCIES"
 
+if [ $OLDPYTHON == false ] ; then
+  e_warning "oldpython (python2.7) is set to false"
+else
+  e_success "oldpython (python2.7) is set to true"
+fi
+
+if [ $PROJ4 == false ] ; then
+  e_warning "proj4 is set to false"
+else
+  e_success "proj4 is set to true"
+fi
+
+if [ $SWIG == false ] ; then
+  e_warning "swig is set to false"
+else
+  e_success "swig is set to true"
+fi
+
+if [ $LIBPNG == false ] ; then
+  e_warning "libpng is set to false"
+else
+  e_success "libpng is set to true"
+fi
+
+if [ $ZLIB == false ] ; then
+  e_warning "zlib is set to false"
+else
+  e_success "zlib is set to true"
+fi
+
+if [ $SZIP == false ] ; then
+  e_warning "szip is set to false"
+else
+  e_success "szip is set to true"
+fi
+
+if [ $JPEG == false ] ; then
+  e_warning "jpeg is set to false"
+else
+  e_success "jpeg is set to true"
+fi
+
+if [ $JASPER == false ] ; then
+  e_warning "jasper is set to false"
+else
+  e_success "jasper is set to true"
+fi
+
+if [ $HDF5 == false ] ; then
+  e_warning "hdf5 is set to false"
+else
+  e_success "hdf5 is set to true"
+fi
+
+if [ $NETCDFC == false ] ; then
+  e_warning "netcdf-c is set to false"
+else
+  e_success "netcdf-c is set to true"
+fi
+
+if [ $NETCDFFORTRAN == false ] ; then
+  e_warning "netcdf-Fortran is set to false"
+else
+  e_success "netcdf-Fortran is set to true"
+fi
+
+if [ $ECCODES == false ] ; then
+  e_warning "eccodes is set to false"
+else
+  e_success "eccodes is set to true"
+fi
+
+if [ $ODB == false ] ; then
+  e_warning "odb is set to false"
+else
+  e_success "odb is set to true"
+fi
+
+if [ $MAGIGS == false ] ; then
+  e_warning "magics is set to false"
+else
+  e_success "magics is set to true"
+fi
+
 seek_confirmation "This will (try to) install the dependencies for ECCODES. Do you want to continue?"
 if is_confirmed; then
   e_success "Ok, continuing"
@@ -79,12 +164,14 @@ test_for_package () {
   PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $package|grep "install ok installed")
   echo Checking for $package: $PKG_OK
   if [ "" == "$PKG_OK" ]; then
-    echo "No cmake. Setting up cmake."
+    echo "No $package. Setting up $package."
     sudo apt-get --force-yes --yes install $package
   fi
 }
 
 oldpython_url='https://www.python.org/ftp/python/2.7.17/Python-2.7.17.tar.xz'
+proj4_url='https://download.osgeo.org/proj/proj-6.2.1.tar.gz'
+proj4datum_url='https://download.osgeo.org/proj/proj-datumgrid-1.8.zip'
 swig_url='http://prdownloads.sourceforge.net/swig/swig-4.0.1.tar.gz'
 libpng_url='https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz'
 zlib_url='https://www.zlib.net/zlib-1.2.11.tar.gz'
@@ -125,7 +212,7 @@ echo " "
 #  e_note "Make sure that your current python environment is 2.7"
 #  e_note "ODB API does not yet support python3"
 
-  sleep 4
+  sleep 2
 
   mkdir -p $indir
   mkdir -p $dldir
@@ -135,85 +222,11 @@ fi
 
 if [ $continue_install == true ] ; then
 
-  if [ $OLDPYTHON == false ] ; then
-    e_warning "oldpython (python2.7) is set to false"
-  else
-    e_success "oldpython (python2.7) is set to true"
-  fi
-
-  if [ $SWIG == false ] ; then
-    e_warning "swig is set to false"
-  else
-    e_success "swig is set to true"
-  fi
-
-  if [ $LIBPNG == false ] ; then
-    e_warning "libpng is set to false"
-  else
-    e_success "libpng is set to true"
-  fi
-
-  if [ $ZLIB == false ] ; then
-    e_warning "zlib is set to false"
-  else
-    e_success "zlib is set to true"
-  fi
-
-  if [ $SZIP == false ] ; then
-    e_warning "szip is set to false"
-  else
-    e_success "szip is set to true"
-  fi
-
-  if [ $JPEG == false ] ; then
-    e_warning "jpeg is set to false"
-  else
-    e_success "jpeg is set to true"
-  fi
-
-  if [ $JASPER == false ] ; then
-    e_warning "jasper is set to false"
-  else
-    e_success "jasper is set to true"
-  fi
-
-  if [ $HDF5 == false ] ; then
-    e_warning "hdf5 is set to false"
-  else
-    e_success "hdf5 is set to true"
-  fi
-
-  if [ $NETCDFC == false ] ; then
-    e_warning "netcdf-c is set to false"
-  else
-    e_success "netcdf-c is set to true"
-  fi
-
-  if [ $NETCDFFORTRAN == false ] ; then
-    e_warning "netcdf-Fortran is set to false"
-  else
-    e_success "netcdf-Fortran is set to true"
-  fi
-
-  if [ $ECCODES == false ] ; then
-    e_warning "eccodes is set to false"
-  else
-    e_success "eccodes is set to true"
-  fi
-
-  if [ $ODB == false ] ; then
-    e_warning "odb is set to false"
-  else
-    e_success "odb is set to true"
-  fi
-
-  if [ $MAGIGS == false ] ; then
-    e_warning "magics is set to false"
-  else
-    e_success "magics is set to true"
-  fi
 
   test_for_package "cmake"
+  test_for_package "gdal-bin"
+  test_for_package "libproj-dev"
+  test_for_package "binutils"
   test_for_package "gfortran"
   test_for_package "bison"
   test_for_package "flex"
@@ -232,6 +245,8 @@ if [ $continue_install == true ] ; then
   test_for_package "libboost-all-dev"
   test_for_package "libexpat1-dev"
   test_for_package "qtbase5-dev"
+  test_for_package "sqlite3" # Dependency for PROJ4
+  test_for_package "libsqlite3-dev" # Dependency for PROJ4
 
   export PYTHON_BASE=$indir
 
@@ -257,6 +272,19 @@ if [ $continue_install == true ] ; then
     yes | $indir/bin/pip2 install jinja2
     yes | $indir/bin/pip2 install numpy
 
+  fi
+
+  # SWIG
+  if [ $PROJ4 == true ] ; then
+    e_arrow "Fetching PROJ4"
+    wget --no-clobber $proj4_url
+    tar --keep-old-files -xf proj-6.2.1.tar.gz
+    mkdir -p $dldir/proj_build
+    cd $dldir/proj_build
+    cmake -DCMAKE_INSTALL_PREFIX=$indir ../proj-6.2.1
+    make
+    make install
+    cd $dldir
   fi
 
   # SWIG
