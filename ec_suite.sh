@@ -1,6 +1,6 @@
 #!/bin/bash
 
-indir="/home/kah/env/" # Installation prefix
+indir="/home/kah/ec/" # Installation prefix
 dldir=$PWD"/tmp" # Directory to download archives to
 
 OLDPYTHON=true # Python2.7 is necessary for ODB Python binding
@@ -15,8 +15,8 @@ HDF5=true # Dependency for netcdf and eccodes
 NETCDFC=false # Not a required dependency, but nice to have
 NETCDFFORTRAN=false # Not a required dependency, but nice to have
 ECCODES=true # A must have and dependency to ODB
-ODB=false
-MAGIGS=false
+ODB=true
+MAGIGS=true
 
 
 # THERE IS NO NEED TO TOUCH ANYTHING BELOW THIS #
@@ -63,7 +63,7 @@ fi
 return 1
 }
 
-e_header "BASH INSTALLATION SCRIPT OF ECCODES AND DEPENDENCIES"
+e_header "BASH INSTALLATION SCRIPT OF THE ECMWF SUITE (ECCODES AND DEPENDENCIES)"
 
 if [ $OLDPYTHON == false ] ; then
   e_warning "oldpython (python2.7) is set to false"
@@ -149,7 +149,7 @@ else
   e_success "magics is set to true"
 fi
 
-seek_confirmation "This will (try to) install the dependencies for ECCODES. Do you want to continue?"
+seek_confirmation "This will (try to) install the dependencies for the ECMWF suite. Do you want to continue?"
 if is_confirmed; then
   e_success "Ok, continuing"
   continue_install=true
